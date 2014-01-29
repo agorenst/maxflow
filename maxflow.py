@@ -89,6 +89,7 @@ def max_flow(G, s, t):
     delta = compute_delta(G, s)
 
     while delta >= 1:
+        print 'delta:', delta
         p = scaled_s_t_path(G, delta, s, t)
         while p != []:
             augment(G, p)
@@ -117,9 +118,12 @@ def dimacs_read_graph(infile):
             else:
                 t = int(words[1])
         if words[0] == 'a': # edge(arc) in out weight
+            # what about repeated edges? flipped eges in the input file?
             edge = (int(words[1]), int(words[2]))
-            assert edge not in G and flip(edge) not in G
-            G[edge] = float(words[3])
+            weight = float(words[3])
+            # is this assert valid re: DIMACS format?
+            assert edge not in G and flip(edge) not in G:
+            G[edge] = weight
             G[flip(edge)] = 0
     return G, s, t
 
